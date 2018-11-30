@@ -4005,6 +4005,7 @@ int redisIsSupervised(int mode) {
 
 
 int main(int argc, char **argv) {
+	printf("main begin");
     struct timeval tv;
     int j;
 
