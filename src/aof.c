@@ -1474,6 +1474,7 @@ void aofChildPipeReadable(aeEventLoop *el, int fd, void *privdata, int mask) {
  * and two other pipes used by the children to signal it finished with
  * the rewrite so no more data should be written, and another for the
  * parent to acknowledge it understood this new condition. */
+//创建AOF管道进行通信，用于父子间通信
 int aofCreatePipes(void) {
     int fds[6] = {-1, -1, -1, -1, -1, -1};
     int j;
@@ -1602,9 +1603,9 @@ void bgrewriteaofCommand(client *c) {
     }
 }
 
+//删除模版文件
 void aofRemoveTempFile(pid_t childpid) {
     char tmpfile[256];
-
     snprintf(tmpfile,256,"temp-rewriteaof-bg-%d.aof", (int) childpid);
     unlink(tmpfile);
 }
