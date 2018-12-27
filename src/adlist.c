@@ -33,6 +33,8 @@
 #include "adlist.h"
 #include "zmalloc.h"
 
+//创建一个空列表，主要为封装双向链表
+
 /* Create a new list. The created list can be freed with
  * AlFreeList(), but private value of every node need to be freed
  * by the user before to call AlFreeList().

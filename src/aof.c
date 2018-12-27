@@ -1614,6 +1614,7 @@ void aofRemoveTempFile(pid_t childpid) {
  * to check the size of the file. This is useful after a rewrite or after
  * a restart, normally the size is updated just adding the write length
  * to the current length, that is much faster. */
+//更新aof文件占用的大小
 void aofUpdateCurrentSize(void) {
     struct redis_stat sb;
     mstime_t latency;

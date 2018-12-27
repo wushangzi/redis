@@ -32,7 +32,6 @@
 #define __QUICKLIST_H__
 
 /* Node, quicklist, and Iterator are the only data structures used currently. */
-
 /* quicklistNode is a 32 byte struct describing a ziplist for a quicklist.
  * We use bit fields keep the quicklistNode at 32 bytes.
  * count: 16 bits, max 65536 (max zl bytes is 65k, so max count actually < 32k).
@@ -110,7 +109,6 @@ typedef struct quicklistEntry {
 /* quicklist container formats */
 #define QUICKLIST_NODE_CONTAINER_NONE 1
 #define QUICKLIST_NODE_CONTAINER_ZIPLIST 2
-
 #define quicklistNodeIsCompressed(node)                                        \
     ((node)->encoding == QUICKLIST_NODE_ENCODING_LZF)
 

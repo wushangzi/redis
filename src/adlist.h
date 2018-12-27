@@ -39,6 +39,7 @@ typedef struct listNode {
     void *value;
 } listNode;
 
+//迭代器
 typedef struct listIter {
     listNode *next;
     int direction;
@@ -47,10 +48,10 @@ typedef struct listIter {
 typedef struct list {
     listNode *head;
     listNode *tail;
-    void *(*dup)(void *ptr);
-    void (*free)(void *ptr);
+    void *(*dup)(void *ptr);//复制指针
+    void (*free)(void *ptr);//释放指针
     int (*match)(void *ptr, void *key);
-    unsigned long len;
+    unsigned long len;//链表长度
 } list;
 
 /* Functions implemented as macros */

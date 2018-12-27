@@ -124,6 +124,7 @@ volatile unsigned long lru_clock; /* Server global current LRU time. */
  *    Note that commands that may trigger a DEL as a side effect (like SET)
  *    are not fast commands.
  */
+//命令列表
 struct redisCommand redisCommandTable[] = {
     {"module",moduleCommand,-2,"as",0,NULL,0,0,0,0,0},
     {"get",getCommand,2,"rF",0,NULL,1,1,1,0,0},
@@ -328,7 +329,7 @@ struct redisCommand redisCommandTable[] = {
 };
 
 /*============================ Utility functions ============================ */
-
+//工具方法
 /* We use a private localtime implementation which is fork-safe. The logging
  * function of Redis may be called from other threads. */
 void nolocks_localtime(struct tm *tmp, time_t t, time_t tz, int dst);
@@ -423,6 +424,7 @@ err:
 }
 
 /* Return the UNIX time in microseconds */
+//返回unix的微秒数据
 long long ustime(void) {
     struct timeval tv;
     long long ust;
@@ -434,6 +436,7 @@ long long ustime(void) {
 }
 
 /* Return the UNIX time in milliseconds */
+//返回unix的毫秒数据
 mstime_t mstime(void) {
     return ustime()/1000;
 }
@@ -455,7 +458,6 @@ void exitFromChild(int retcode) {
 /* This is a hash table type that uses the SDS dynamic strings library as
  * keys and redis objects as values (objects can hold SDS strings,
  * lists, sets). */
-
 void dictVanillaFree(void *privdata, void *val)
 {
     DICT_NOTUSED(privdata);
@@ -1085,7 +1087,7 @@ void updateCachedTime(void) {
  * so in order to throttle execution of things we want to do less frequently
  * a macro is used: run_with_period(milliseconds) { .... }
  */
-
+//定时服务
 int serverCron(struct aeEventLoop *eventLoop, long long id, void *clientData) {
     int j;
     UNUSED(eventLoop);
@@ -1517,9 +1519,9 @@ void createSharedObjects(void) {
 void initServerConfig(void) {
     int j;
 
-    pthread_mutex_init(&server.next_client_id_mutex,NULL);
-    pthread_mutex_init(&server.lruclock_mutex,NULL);
-    pthread_mutex_init(&server.unixtime_mutex,NULL);
+    pthread_mutex_init(&server.next_client_id_mutex,NULL);//初始化互斥锁
+    pthread_mutex_init(&server.lruclock_mutex,NULL);//初始化互斥锁
+    pthread_mutex_init(&server.unixtime_mutex,NULL);//初始化互斥锁
 
     updateCachedTime();
     getRandomHexChars(server.runid,CONFIG_RUN_ID_SIZE);
@@ -3680,7 +3682,7 @@ int linuxOvercommitMemoryValue(void) {
     return atoi(buf);
 }
 
-void linuxMemoryWarnings(void) {
+void linuxMemoryWarnings(void) {//linux内存警报
     if (linuxOvercommitMemoryValue() == 0) {
         serverLog(LL_WARNING,"WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.");
     }
@@ -4041,17 +4043,17 @@ int main(int argc, char **argv) {
 #ifdef INIT_SETPROCTITLE_REPLACEMENT
     spt_init(argc, argv);
 #endif
-    setlocale(LC_COLLATE,"");
-    tzset(); /* Populates 'timezone' global. */
-    zmalloc_set_oom_handler(redisOutOfMemoryHandler);
-    srand(time(NULL)^getpid());
-    gettimeofday(&tv,NULL);
+    setlocale(LC_COLLATE,"");//设置本地地区编码
+    tzset(); /* Populates 'timezone' global. *///设置时间环境变量
+    zmalloc_set_oom_handler(redisOutOfMemoryHandler);//设置out of memory 指针
+    srand(time(NULL)^getpid());//设置随机变量因子
+    gettimeofday(&tv,NULL);//设置时间
 
     char hashseed[16];
     getRandomHexChars(hashseed,sizeof(hashseed));
     dictSetHashFunctionSeed((uint8_t*)hashseed);
     server.sentinel_mode = checkForSentinelMode(argc,argv);
-    initServerConfig();
+    initServerConfig();//初始化配置信息
     moduleInitModulesSystem();
 
     /* Store the executable path and arguments in a safe place in order
@@ -4162,6 +4164,7 @@ int main(int argc, char **argv) {
     int background = server.daemonize && !server.supervised;
     if (background) daemonize();
 
+    /*初始化服务*/
     initServer();
     if (background || server.pidfile) createPidFile();
     redisSetProcTitle(argv[0]);
@@ -4175,7 +4178,7 @@ int main(int argc, char **argv) {
         linuxMemoryWarnings();
     #endif
         moduleLoadFromQueue();
-        loadDataFromDisk();
+        loadDataFromDisk();//从磁盘中导入数据
         if (server.cluster_enabled) {
             if (verifyClusterConfigWithData() == C_ERR) {
                 serverLog(LL_WARNING,

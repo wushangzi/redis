@@ -149,6 +149,7 @@ static int spt_copyargs(int argc, char *argv[]) {
 } /* spt_copyargs() */
 
 
+//初始化参数
 void spt_init(int argc, char *argv[]) {
         char **envp = environ;
 	char *base, *end, *nul, *tmp;

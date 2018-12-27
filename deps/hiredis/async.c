@@ -408,6 +408,7 @@ static int __redisGetSubscribeCallback(redisAsyncContext *ac, redisReply *reply,
     return REDIS_OK;
 }
 
+//redis回调程序
 void redisProcessCallbacks(redisAsyncContext *ac) {
     redisContext *c = &(ac->c);
     redisCallback cb = {NULL, NULL, NULL};
