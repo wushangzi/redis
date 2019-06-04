@@ -204,7 +204,7 @@ void dbOverwrite(redisDb *db, robj *key, robj *val) {
 
     dictFreeVal(db->dict, &auxentry);
 }
-
+//TODO this function  is low performs 。because when the key is exist, is will find the key object twice
 /* High level Set operation. This function can be used in order to set
  * a key, whatever it was existing or not, to a new object.
  *
@@ -214,7 +214,7 @@ void dbOverwrite(redisDb *db, robj *key, robj *val) {
  *
  * All the new keys in the database should be creted via this interface. */
 void setKey(redisDb *db, robj *key, robj *val) {
-    if (lookupKeyWrite(db,key) == NULL) {
+    if (lookupKeyWrite(db,key) == NULL) {//check the key is exist
         dbAdd(db,key,val);
     } else {
         dbOverwrite(db,key,val);
@@ -549,7 +549,7 @@ void keysCommand(client *c) {
 
         if (allkeys || stringmatchlen(pattern,plen,key,sdslen(key),0)) {
             keyobj = createStringObject(key,sdslen(key));
-            if (!keyIsExpired(c->db,keyobj)) {
+            if (!keyIsExpired(c->db,keyobj)) {//check the key if expired
                 addReplyBulk(c,keyobj);
                 numkeys++;
             }
