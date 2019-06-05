@@ -193,10 +193,10 @@ void listTypeConvert(robj *subject, int enc) {
 /*-----------------------------------------------------------------------------
  * List Commands
  *----------------------------------------------------------------------------*/
-
+//node:if the key which lpush to redis is exist even the type is different.redis will refuse to add the new list
 void pushGenericCommand(client *c, int where) {
     int j, pushed = 0;
-    robj *lobj = lookupKeyWrite(c->db,c->argv[1]);
+    robj *lobj = lookupKeyWriexpireIfNeededte(c->db,c->argv[1]);
 
     if (lobj && lobj->type != OBJ_LIST) {
         addReply(c,shared.wrongtypeerr);

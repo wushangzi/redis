@@ -473,7 +473,7 @@ void dictRelease(dict *d)
     _dictClear(d,&d->ht[1],NULL);
     zfree(d);
 }
-
+//note every key have been warp to a sds stuct
 dictEntry *dictFind(dict *d, const void *key)
 {
     dictEntry *he;
