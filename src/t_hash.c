@@ -43,8 +43,9 @@ void hashTypeTryConversion(robj *o, robj **argv, int start, int end) {
     if (o->encoding != OBJ_ENCODING_ZIPLIST) return;
 
     for (i = start; i <= end; i++) {
-        if (sdsEncodedObject(argv[i]) &&
-            sdslen(argv[i]->ptr) > server.hash_max_ziplist_value)
+    	int sdsEncodedObjectResult=sdsEncodedObject(argv[i]);
+    	int sdsLen=sdslen(argv[i]->ptr);
+        if (sdsEncodedObjectResult && sdsLen> server.hash_max_ziplist_value)
         {
             hashTypeConvert(o, OBJ_ENCODING_HT);
             break;
@@ -449,7 +450,7 @@ sds hashTypeCurrentObjectNewSds(hashTypeIterator *hi, int what) {
 }
 
 robj *hashTypeLookupWriteOrCreate(client *c, robj *key) {
-    robj *o = lookupKeyWrite(c->db,key);
+    robj *o = lookupKeyWrite(c->db,key);/*check the key exist*/
     if (o == NULL) {
         o = createHashObject();
         dbAdd(c->db,key,o);

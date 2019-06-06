@@ -260,7 +260,7 @@ void setTypeConvert(robj *setobj, int enc) {
         serverPanic("Unsupported set conversion");
     }
 }
-
+//note first way it will check the key is exist.if exist and the key is not set.the will return immediately
 void saddCommand(client *c) {
     robj *set;
     int j, added = 0;
