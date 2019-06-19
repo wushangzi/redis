@@ -58,7 +58,7 @@ ifeq ($(uname_S),SunOS)
 	LUA_CFLAGS= -D__C99FEATURES__=1
 endif
 
-LUA_CFLAGS+= -O2 -Wall -DLUA_ANSI -DENABLE_CJSON_GLOBAL -DREDIS_STATIC='' $(CFLAGS)
+LUA_CFLAGS+= -O0 -Wall -DLUA_ANSI -DENABLE_CJSON_GLOBAL -DREDIS_STATIC='' $(CFLAGS)
 LUA_LDFLAGS+= $(LDFLAGS)
 # lua's Makefile defines AR="ar rcu", which is unusual, and makes it more
 # challenging to cross-compile lua (and redis).  These defines make it easier
@@ -72,7 +72,7 @@ lua: .make-prerequisites
 
 .PHONY: lua
 
-JEMALLOC_CFLAGS= -std=gnu99 -Wall -pipe -g3 -O3 -funroll-loops $(CFLAGS)
+JEMALLOC_CFLAGS= -std=gnu99 -Wall -pipe -g0 -O0 -funroll-loops $(CFLAGS)
 JEMALLOC_LDFLAGS= $(LDFLAGS)
 
 jemalloc: .make-prerequisites
